@@ -42,6 +42,7 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.findById(id)
                 .flatMap(c -> {
                     c.setCustomerType(customer.getCustomerType());
+                    c.setName(customer.getName());
                     c.setDocType(customer.getDocType());
                     c.setDocNumber(customer.getDocNumber());
                     c.setAddress(customer.getAddress());
