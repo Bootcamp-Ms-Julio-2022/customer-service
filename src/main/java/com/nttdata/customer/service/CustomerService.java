@@ -1,6 +1,6 @@
-package com.nttdata.customerservice.service;
+package com.nttdata.customer.service;
 
-import com.nttdata.customerservice.entity.Customer;
+import com.nttdata.customer.entity.Customer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -14,7 +14,9 @@ public interface CustomerService {
 
     Mono<Customer> save(Customer customer);
 
-    Mono<Customer> update(String id, Customer customer);
+    Mono<Customer> update(Customer customer);
 
     Mono<Customer> delete(String id);
+
+    Mono<Customer> findByDocNumber(String docNumber);
 }

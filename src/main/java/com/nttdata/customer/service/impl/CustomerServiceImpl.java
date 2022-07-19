@@ -1,8 +1,8 @@
-package com.nttdata.customerservice.service.impl;
+package com.nttdata.customer.service.impl;
 
-import com.nttdata.customerservice.entity.Customer;
-import com.nttdata.customerservice.repository.CustomerRepository;
-import com.nttdata.customerservice.service.CustomerService;
+import com.nttdata.customer.entity.Customer;
+import com.nttdata.customer.repository.CustomerRepository;
+import com.nttdata.customer.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -34,12 +34,13 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Mono<Customer> save(Customer customer) {
         customer.setCreatedAt(new Date());
+        customer.setState("active");
         return customerRepository.save(customer);
     }
 
     @Override
-    public Mono<Customer> update(String id, Customer customer) {
-        return customerRepository.findById(id)
+    public Mono<Customer> update(Customer customer) {
+        return customerRepository.findById(customer.getId())
                 .flatMap(c -> {
                     c.setCustomerType(customer.getCustomerType());
                     c.setName(customer.getName());
@@ -60,5 +61,10 @@ public class CustomerServiceImpl implements CustomerService {
         return customerRepository.findById(id)
                 .flatMap(c -> customerRepository.delete(c)
                         .then(Mono.just(c)));
+    }
+
+    @Override
+    public Mono<Customer> findByDocNumber(String docNumber) {
+        return customerRepository.findCustomerByDocNumber(docNumber);
     }
 }

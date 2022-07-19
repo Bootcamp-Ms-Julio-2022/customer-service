@@ -1,7 +1,7 @@
-package com.nttdata.customerservice.controller;
+package com.nttdata.customer.controller;
 
-import com.nttdata.customerservice.entity.Customer;
-import com.nttdata.customerservice.service.CustomerService;
+import com.nttdata.customer.entity.Customer;
+import com.nttdata.customer.service.CustomerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,11 +16,6 @@ public class CustomerController {
 
     @Autowired
     private CustomerService customerService;
-
-    @GetMapping("/state")
-    public String displayState() {
-        return "Service is up";
-    }
 
     // -------------------Retrieve all customers
 
@@ -40,12 +35,20 @@ public class CustomerController {
                 customerService.findAllByCustomerType(type.toUpperCase());
     }
 
-    // -------------------Retrieve single customer by id
+    // -------------------Retrieve single customer by id/docNumber
 
-    @GetMapping("/{id}")
-    public Mono<ResponseEntity<Customer>> retrieveById(@PathVariable("id") String id) {
-        log.info("Retrieving customer with id: " + id);
-        Mono<Customer> customer = customerService.findById(id);
+//    @GetMapping("/{id}")
+//    public Mono<ResponseEntity<Customer>> retrieveById(@PathVariable("id") String id) {
+//        log.info("Retrieving customer with id: " + id);
+//        Mono<Customer> customer = customerService.findById(id);
+//        return customer.map(c -> ResponseEntity.ok(c))
+//                .defaultIfEmpty(ResponseEntity.notFound().build());
+//    }
+
+    @GetMapping("/{docNumber}")
+    public Mono<ResponseEntity<Customer>> retrieveById(@PathVariable("docNumber") String docNumber) {
+        log.info("Retrieving customer with doc-number: " + docNumber);
+        Mono<Customer> customer = customerService.findByDocNumber(docNumber);
         return customer.map(c -> ResponseEntity.ok(c))
                 .defaultIfEmpty(ResponseEntity.notFound().build());
     }
@@ -60,10 +63,10 @@ public class CustomerController {
 
     // -------------------Update a customer
 
-    @PutMapping("/{id}")
-    public Mono<ResponseEntity<Customer>> update(@PathVariable("id") String id, @RequestBody Customer customer) {
-        log.info("Updating customer with id: " + id);
-        return customerService.update(id, customer)
+    @PutMapping
+    public Mono<ResponseEntity<Customer>> update(@RequestBody Customer customer) {
+        log.info("Updating customer with id: " + customer.getId());
+        return customerService.update(customer)
                 .map(updatedCustomer -> ResponseEntity.ok(updatedCustomer))
                 .defaultIfEmpty(ResponseEntity.badRequest().build());
     }
