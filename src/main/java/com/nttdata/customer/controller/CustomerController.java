@@ -37,16 +37,16 @@ public class CustomerController {
 
     // -------------------Retrieve single customer by id/docNumber
 
-//    @GetMapping("/{id}")
-//    public Mono<ResponseEntity<Customer>> retrieveById(@PathVariable("id") String id) {
-//        log.info("Retrieving customer with id: " + id);
-//        Mono<Customer> customer = customerService.findById(id);
-//        return customer.map(c -> ResponseEntity.ok(c))
-//                .defaultIfEmpty(ResponseEntity.notFound().build());
-//    }
+    @GetMapping("/just/{id}")
+    public Mono<ResponseEntity<Customer>> retrieveById(@PathVariable("id") String id) {
+        log.info("Retrieving customer with id: " + id);
+        Mono<Customer> customer = customerService.findById(id);
+        return customer.map(c -> ResponseEntity.ok(c))
+                .defaultIfEmpty(ResponseEntity.notFound().build());
+    }
 
     @GetMapping("/{docNumber}")
-    public Mono<ResponseEntity<Customer>> retrieveById(@PathVariable("docNumber") String docNumber) {
+    public Mono<ResponseEntity<Customer>> retrieveByDocNumber(@PathVariable("docNumber") String docNumber) {
         log.info("Retrieving customer with doc-number: " + docNumber);
         Mono<Customer> customer = customerService.findByDocNumber(docNumber);
         return customer.map(c -> ResponseEntity.ok(c))
